@@ -1,2 +1,9 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+  import { Canvas } from '@threlte/core';
+  import Scene from './Scene.svelte';
+  import OverlayMenu from './OverlayMenu.svelte';
+</script>
+
+<Canvas>
+  <Scene />
+</Canvas>
