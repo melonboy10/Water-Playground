@@ -1,5 +1,5 @@
 <script lang="ts">
-  import heightmapFragmentShader from '$lib/client/shaders/heightmapFragmentShader.glsl?raw';
+  import heightmapFragmentShader from '$lib/client/shaders/heightMapFragmentShader.glsl?raw';
   import readWaterLevelFragmentShader from '$lib/client/shaders/readWaterLevelFragmentShader.glsl?raw';
   import waterVertexShader from '$lib/client/shaders/waterVertexShader.glsl?raw';
   import waterFragmentShader from '$lib/client/shaders/waterFragmentShader.glsl?raw';
