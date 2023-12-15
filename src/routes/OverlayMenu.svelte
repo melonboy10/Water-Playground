@@ -1,11 +1,11 @@
 <script lang="ts">
   import { Canvas, T, useFrame, useLoader, useTask, useThrelte } from '@threlte/core';
-  import { Matrix4, Vector3, Mesh, Quaternion, Group, Object3D, MeshBasicMaterial, Material } from 'three';
+  import { Matrix4, Vector3, Mesh, Quaternion, Group, Object3D, MeshBasicMaterial, Material, BoxGeometry } from 'three';
   import { Box, Flex, useDimensions } from '@threlte/flex';
   import Plane from './Plane.svelte';
   import { Align, Text, interactivity, useGltf } from '@threlte/extras';
   import { GLTFLoader } from '$lib/GLTFLoader';
-  import { addFloatingObject, floatingObjects, raining, starterObjects } from '$lib/client/scene';
+  import { addFloatingObject, floatingObjects, raining, starterObjects, users } from '$lib/client/scene';
   import { ClientMesasgeType, ServerMessageType } from '$lib';
   import { listenFor, send } from '$lib/client/websocket';
   const { camera, size } = useThrelte();
@@ -15,6 +15,7 @@
   import Whale from '$lib/client/models/whale.glb?url';
   import Submarine from '$lib/client/models/sub.glb?url';
   import Turtle from '$lib/client/models/turtle.glb?url';
+  import Flamingo from '$lib/client/models/flamingo.glb?url';
 
   async function createMesh(path: string) {
     const model = await useGltf(path);
@@ -23,8 +24,7 @@
 
     return model;
   }
-  const menuObjects = [Ducky, Benchy, Whale, Submarine, Turtle].map(createMesh);
-  $: console.log(starterObjects);
+  const menuObjects = [Ducky, Benchy, Whale, Submarine, Turtle, Flamingo].map(createMesh);
   $: $starterObjects.forEach((id) => {
     menuObjects[id].then((model) => {
       addFloatingObject(model.scene, true);
@@ -34,7 +34,6 @@
   listenFor(ServerMessageType.ADD_FLOATING_OBJECT, (data) => {
     const ndata = data as { id: number };
     menuObjects[ndata.id].then((model) => {
-      console.log(model);
       addFloatingObject(model.scene);
     });
   });
@@ -50,11 +49,11 @@
 </script>
 
 <T.Group position={[-$size.width / 2 / 40 + menuWidth / 2 + 1, 0, 5]}>
-  <Plane width={menuWidth} height={menuHeight}></Plane>
+  <Plane width={menuWidth} height={menuHeight} opacity={0.5} depth={-2} />
   <Flex width={menuWidth} height={menuHeight} padding={0.2} flexDirection="Column" gap={0.2} justifyContent="FlexStart" alignItems="Stretch" let:width let:height>
     <Box width="auto" height={2} let:width let:height>
-      <Plane {width} {height} color={'#000000'}>
-        <Text text="Object Picker" color={'white'} fontSize={1} anchorX={'50%'} anchorY={'50%'} />
+      <Plane {width} {height} color={'#fff'} opacity={0.5}>
+        <Text text="Object Picker" color={'black'} fontSize={1} anchorX={'50%'} anchorY={'50%'} />
       </Plane>
     </Box>
     <Box width="auto" height="auto" flexWrap="Wrap" gap={0.2} justifyContent="FlexStart">
@@ -97,6 +96,7 @@
   </Flex>
 </T.Group>
 
+<Text position={[$size.width / 2 / 40 - 1, $size.height / 2 / 40 - 1, -1]} text={`${$users.length + 1} ${$users.length == 0 ? 'person' : 'people'}`} color={'White'} fontSize={0.5} anchorX={'100%'} anchorY={'0%'} />
 <!-- <Align x={-3} y={showMenu ? 0 : 14} z={false} let:align> -->
 <!-- <Align x={menuLocation.x} y={menuLocation.y} z={false} let:align> -->
 <!-- <Flex width={8} height={menuHeight} justifyContent="FlexStart" flexDirection="Column" gap={0.2} let:width let:height>

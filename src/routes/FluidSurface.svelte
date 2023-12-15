@@ -141,7 +141,7 @@
             intersectCount++;
             uniforms.numPositions.value++;
 
-            rainGeometry.attributes.position.array[i] = heightHalf;
+            rainGeometry.attributes.position.array[i] = Math.random() * 10 + 15;
             rainGeometry.attributes.position.array[i - 1] = Math.random() * width - widthHalf;
             rainGeometry.attributes.position.array[i + 1] = Math.random() * height - heightHalf;
           }
@@ -180,6 +180,23 @@
 
         waterNormal.multiplyScalar(0.003);
         object.userData.velocity.add(waterNormal);
+
+        const closest = new Vector3();
+        let closestDistance = 1000;
+        $floatingObjects.forEach((otherObject) => {
+          if (otherObject && otherObject !== object) {
+            const distance = otherObject.position.distanceToSquared(object.position);
+            if (distance < closestDistance) {
+              closestDistance = distance;
+              closest.copy(otherObject.position);
+            }
+          }
+        });
+        if (closestDistance < 1) {
+          const direction = new Vector3().subVectors(object.position, closest).normalize();
+          object.userData.velocity.add(direction.multiplyScalar(0.01));
+        }
+
         object.userData.velocity.multiplyScalar(0.998);
 
         object.userData.angularVelocity += waterNormal.x;

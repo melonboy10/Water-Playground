@@ -30,7 +30,7 @@ export function addFloatingObject(object: Mesh, randomPosition: boolean = false)
   newObject.userData.angularVelocity = 0;
   newObject.renderOrder = 0;
   if (randomPosition) newObject.position.set(Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5);
-  else newObject.position.set(0, 1, 0);
+  else newObject.position.set(Math.random() / 10, 1, Math.random() / 10);
   // newObject.material = new MeshBasicMaterial();
   floatingObjects.update((objects) => (objects.push(newObject), objects));
 }

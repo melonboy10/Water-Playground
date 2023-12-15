@@ -17,8 +17,6 @@
   <T.PlaneGeometry args={[width, height]} />
   {#if $$slots.default}
     <slot />
-  {:else}
-    {(opacity = 0.5)}
   {/if}
   <T.MeshBasicMaterial {color} {opacity} depthWrite={false} transparent={opacity != 1} />
 </T.Mesh>

@@ -149,7 +149,6 @@ function handleMessage(from: ExtendedWebSocket, clientMessage: ClientToServerMes
     }
     case ClientMesasgeType.ADD_FLOATING_OBJECT: {
       const { id } = clientMessage.data;
-      console.log('adding floating object', id);
       wss.objects.push(id);
 
       sendAllOthers(from, {
